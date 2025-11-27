@@ -1,10 +1,11 @@
 {
-  "name": "Skills Chart",
+  "name": "Skills Chart Improved",
   "id": "1207836110040407856",
   "api": "1.0.0",
   "main": "code.js",
   "editorType": [
-    "figjam"
+    "figjam",
+    "figma"
   ],
   "containsWidget": true,
   "widgetApi": "1.0.0"
