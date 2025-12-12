@@ -20,63 +20,68 @@ type Category = {
   skillDescriptions: string[];
 };
 
-const strategyCategory = {
-  name: "Strategy",
-  width: 810,
-  color: "#9747FF",
-  skills: ["Product", "Research", "Vision"],
-  skillDescriptions: ["What we're building and why", "Qualitative and quantitative evidence", "Future pathways and how things fit together"],
-};
-const craftCategory = {
-  name: "Craft",
-  width: 810,
+const technicalCategory = {
+  name: "Técnica",
+  width: 1600,
   color: "#0D99FF",
-  skills: ["Visual", "Interaction", "Systems"],
-  skillDescriptions: ["How things look", "How things behave", "Underlying models, IAs, etc."],
-};
-const writingCraftCategory = {
-  name: "Writing",
-  width: 1088 ,
-  color: "#0D99FF",
-  skills: ["Content", "Copywriting", "Systems\u200B", "Design"],
-  skillDescriptions: ["Figuring out what to write", "Finding the perfect words", "Building consistency and cohesion", "Developing your UX design chops"],
+  skills: ["Diagramação", "Tipografia", "Cores", "Fotografia", "Softwares", "Eficiência" ],
+  skillDescriptions: ["", "", "", "", "", ""],
 };
 const collabCategory = {
-  name: "Collaboration",
+  name: "Colaboração",
   width: 810,
   color: "#14AE5C",
-  skills: ["Communication", "Process", "Mindset"],
-  skillDescriptions: ["Written, verbal, and interpersonal skills", "Resiliency and growth orientation", "Sharing work and incorporating feedback"],
+  skills: ["Comunicação", "Processo", "Relações"],
+  skillDescriptions: ["", "", ""],
 };
 const impactCategory = {
-  name: "Impact",
+  name: "Impacto",
   width: 810,
   color: "#FFCD29",
-  skills: ["Effectiveness", "Leadership", "Citizenship"],
-  skillDescriptions: ["Output, follow-through, and business impact", "Mentorship, ability to influence and drive change", "Improving our culture, hiring, and company practices"],
+  skills: ["Efetividade", "Liderança", "Conformidade"],
+  skillDescriptions: ["", "", ""],
 };
 
 const categories = [
-  strategyCategory, craftCategory, writingCraftCategory, collabCategory, impactCategory
+  technicalCategory, collabCategory, impactCategory
 ];
 
 function Widget() {
   useStickable();
   const voteMap = useSyncedMap<number>("skill-level")
-  const [userLevel, setUserLevel] = useSyncedState<number>('level', 1)
+  const [userLevel, setUserLevel] = useSyncedState<number>('level', 2)
   const [showLevels, setShowLevels] = useSyncedState<boolean>("isShown", false)
   
 
   const roleCategories = {
-    "Design": {
-      'categories':['Craft', 'Strategy', 'Collaboration', 'Collaboration'],
-      'width': 3000,
+    "Criação": {
+      'categories':['Técnica', 'Colaboração', 'Impacto'],
+      'width': 3800,
     },
-    "Writing": {
-      'categories':['Writing', 'Strategy'],
-      'width': 2500,
-    }
   }
+
+  const levelOptions = [
+    {
+      'option': '1',
+      'label': 'Level 1'
+    },
+    {
+      'option': '2',
+      'label': 'Level 2'
+    },
+    {
+      'option': '3',
+      'label': 'Level 3'
+    },
+    {
+      'option': '4',
+      'label': 'Level 4'
+    },
+    {
+      'option': '5',
+      'label': 'Level 5'
+    }
+  ]
 
   const roleOptions =  Object.keys(roleCategories).map(obj => { return { option: obj, label: obj } } )
 
@@ -92,6 +97,13 @@ function Widget() {
         tooltip: 'Role',
         selectedOption: role,
         options: roleOptions,
+      },
+      {
+        itemType: 'dropdown',
+        propertyName: 'levels',
+        tooltip: 'Level',
+        selectedOption: userLevel.toString(),
+        options: levelOptions,
       },
       
       {
@@ -110,8 +122,11 @@ function Widget() {
         setWidth(roleCategories[propertyValue].width)
       } else if (propertyName == "levelToggle") {
         setShowLevels(!showLevels);
+      }  else if (propertyName == "levels") {
+        setUserLevel(parseInt(propertyValue));
       }
-    },
+    }
+    ,
   )
   return (
     <Frame
@@ -360,7 +375,7 @@ function Widget() {
           letterSpacing={1.456}
           fontWeight={700}
         >
-          CURRENT LEVEL ({userLevel})
+          Linha de corte ({userLevel})
         </Text>
         <SVG
           name="Divider-Line-Active"
@@ -625,7 +640,7 @@ function Skill(
         letterSpacing={-0.456}
         fontWeight={700}
       >
-        L{(voteMap.get(skill_key) || 1)}
+        N{(voteMap.get(skill_key) || 1)}
       </Text>
       <Text
         name= { `Skill-Label-${name}` }
